@@ -13,7 +13,7 @@ class Client():
         }
         if token:
             params['oauth_token'] = token
-        resources = list()
+        resources = []
         while url:
             response = requests.get(url, params=params)
             response.raise_for_status()
@@ -22,8 +22,5 @@ class Client():
                 resources.extend(json_data['collection'])
             else:
                 resources.extend(json_data)
-            if 'next_href' in json_data:
-                url = json_data['next_href']
-            else:
-                url = None
+            url = json_data['next_href'] if 'next_href' in json_data else None
         return resources
