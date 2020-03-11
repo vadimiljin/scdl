@@ -352,8 +352,6 @@ def download(user, dl_type, name):
                 download_playlist(item)
             elif dl_type == 'playlists-liked':
                 parse_url(item['playlist']['uri'])
-            elif dl_type == 'commented':
-                download_track(item)
             else:
                 download_track(item)
         except Exception as e:
@@ -416,10 +414,9 @@ def get_filename(track, original_filename=None):
     username = track['user']['username']
     title = track['title'].encode('utf-8', 'ignore').decode('utf8')
 
-    if arguments['--addtofile']:
-        if username not in title and '-' not in title:
-            title = '{0} - {1}'.format(username, title)
-            logger.debug('Adding "{0}" to filename'.format(username))
+    if arguments['--addtofile'] and username not in title and '-' not in title:
+        title = '{0} - {1}'.format(username, title)
+        logger.debug('Adding "{0}" to filename'.format(username))
 
     if arguments['--addtimestamp']:
         # created_at sample: 2019-01-30T11:11:37Z
